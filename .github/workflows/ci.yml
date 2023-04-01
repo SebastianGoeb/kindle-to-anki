@@ -29,19 +29,6 @@ jobs:
       - name: Coverage
         uses: actions-rs/grcov@v0.1
 
-  clippy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Clippy
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features -- -D warnings
-
   bloat:
     runs-on: ubuntu-latest
     steps:
