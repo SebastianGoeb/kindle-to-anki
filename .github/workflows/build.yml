@@ -10,9 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
       - name: Setup
         uses: ./.github/actions/setup
-
       - name: Test
         uses: actions-rs/cargo@v1
         with:
@@ -22,16 +23,16 @@ jobs:
           CARGO_INCREMENTAL: "0"
           RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
           RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-
       - name: Coverage
         uses: actions-rs/grcov@v0.1
 
   clippy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
       - name: Setup
         uses: ./.github/actions/setup
-
       - name: Clippy
         uses: actions-rs/clippy-check@v1
         with:
@@ -41,9 +42,10 @@ jobs:
   bloat:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
       - name: Setup
         uses: ./.github/actions/setup
-
       - name: Cargo bloat
         uses: orf/cargo-bloat-action@v1
         with:
