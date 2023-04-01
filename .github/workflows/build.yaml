@@ -14,8 +14,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install Rust
         uses: actions-rs/toolchain@v1.0.6
-        with:
-          components: clippy, rustfmt
 
       # Cache
       - name: Cache cargo registry
