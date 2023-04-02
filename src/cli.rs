@@ -35,7 +35,7 @@ pub struct Config {
 
 impl Config {
     pub async fn parse(args: &[String]) -> Result<Self, CliError> {
-        match &args[..] {
+        match args {
             [path] => {
                 let sqlite_uri = format!(
                     "file:///{}",
