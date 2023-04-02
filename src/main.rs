@@ -1,10 +1,6 @@
-use kindle_to_anki::ingest;
+use kindle_to_anki::log_words;
 
 #[async_std::main]
 async fn main() -> Result<(), sqlx::Error> {
-    let words = ingest().await?;
-    for word in words {
-        println!("{:?}", word);
-    }
-    Ok(())
+    log_words().await
 }
