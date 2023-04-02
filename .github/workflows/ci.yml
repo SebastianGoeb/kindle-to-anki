@@ -5,7 +5,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -21,7 +21,11 @@ jobs:
           CARGO_INCREMENTAL: "0"
           RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
           RUSTDOCFLAGS: "-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests"
-      - uses: actions-rs/grcov@v0.1
+      - id: coverage
+        uses: actions-rs/grcov@v0.1
+        with:
+          config: configs/grcov.yml
       - uses: codecov/codecov-action@v3
         with:
+          files: ${{ steps.coverage.outputs.report }}
           fail_ci_if_error: true
