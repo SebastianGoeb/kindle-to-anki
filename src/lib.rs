@@ -19,7 +19,7 @@ pub async fn ingest() -> Result<Vec<Word>, sqlx::Error> {
         .to_str()
         .expect("parseable cwd")
         .to_string();
-    let path: String = format!("file:///{}/tmp/vocab.sqlite", cwd);
+    let path: String = format!("file:///{}/test/vocab.sqlite", cwd);
     let mut conn = connect(path).await?;
     select_words().fetch_all(&mut conn).await
 }
@@ -38,23 +38,45 @@ mod tests {
 
     use std::env;
 
-    use crate::{connect, select_words, Word};
+    use crate::{connect, ingest, select_words, Word};
 
     #[async_std::test]
-    async fn should_get_words() -> Result<(), sqlx::Error> {
+    async fn should_ingest_words() -> Result<(), sqlx::Error> {
+        // when we ingest the words
+        let result = ingest().await?;
+
+        // should return the words
+        assert_eq!(result.len(), 121);
+        assert_eq!(
+            result[0],
+            Word {
+                id: String::from("de:verwendet"),
+                word: String::from("verwendet"),
+                stem: String::from("verwenden"),
+                lang: String::from("de"),
+                category: 0,
+                timestamp: -1253962635,
+                profileid: String::from(""),
+            }
+        );
+        Ok(())
+    }
+
+    #[async_std::test]
+    async fn should_select_words() -> Result<(), sqlx::Error> {
         // given a test file with some words
         let cwd = env::current_dir()
             .unwrap()
             .to_str()
             .expect("parseable cwd")
             .to_string();
-        let path: String = format!("file:///{}/tmp/vocab.sqlite", cwd);
+        let path: String = format!("file:///{}/test/vocab.sqlite", cwd);
 
         // when we select the words from the test file
         let mut conn = connect(path).await?;
         let result = select_words().fetch_all(&mut conn).await?;
 
-        // should result the words
+        // should return the words
         assert_eq!(result.len(), 121);
         assert_eq!(
             result[0],
