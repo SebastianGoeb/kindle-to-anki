@@ -15,7 +15,7 @@ jobs:
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin
       - name: Run tests and generate coverage
-        run: cargo tarpaulin -- --all-features --no-fail-fast
+        run: cargo tarpaulin --engine llvm -- --all-features --no-fail-fast
       - uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
