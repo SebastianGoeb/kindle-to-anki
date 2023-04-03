@@ -24,7 +24,3 @@ runs:
           ~/.cargo/git/db/
           target/
         key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-
-    - name: Install cargo-binstall
-      shell: bash
-      run: cargo install cargo-binstall
