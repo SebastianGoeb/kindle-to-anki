@@ -3,7 +3,6 @@ description: Rust Setup
 runs:
   using: composite
   steps:
-    # Setup
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
@@ -11,10 +10,9 @@ runs:
         override: true
         components: rustfmt, clippy
 
-    # Cache
     # example: https://github.com/actions/cache/blob/main/examples.md#rust---cargo
     # needed dirs: https://doc.rust-lang.org/cargo/guide/cargo-home.html#caching-the-cargo-home-in-ci
-    - name: Cache cargo bin
+    - name: Cache cargo
       uses: actions/cache@v3
       with:
         path: |
