@@ -5,15 +5,17 @@ on:
     branches:
       - main
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-      - name: Setup
+      - name: Setup Rust
         uses: ./.github/actions/setup
-      - name: Test
-        uses: actions-rs/cargo@v1
+      - name: Install Tarpaulin
+        run: cargo install cargo-tarpaulin
+      - name: Run tests and generate coverage
+        run: cargo tarpaulin --engine llvm --skip-clean --all-features --no-fail-fast
+      - uses: codecov/codecov-action@v3
         with:
-          command: test
-          args: --all-features --no-fail-fast
+          fail_ci_if_error: true

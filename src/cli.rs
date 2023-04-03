@@ -28,7 +28,7 @@ impl From<std::io::Error> for CliError {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Config {
     pub path: String,
 }
