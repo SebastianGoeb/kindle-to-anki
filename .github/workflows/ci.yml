@@ -32,4 +32,5 @@ jobs:
           args: "-- --test-threads 1"
       - uses: codecov/codecov-action@v3
         with:
+          verbose: true
           fail_ci_if_error: true
