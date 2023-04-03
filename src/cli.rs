@@ -28,7 +28,7 @@ impl From<std::io::Error> for CliError {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Config {
     pub path: String,
 }
@@ -47,5 +47,25 @@ impl Config {
             }
             _ => Err(CliError::Args),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::cli::Config;
+
+    use super::CliError;
+
+    #[async_std::test]
+    async fn should_parse_config() -> Result<(), CliError> {
+        let config = Config::parse(&vec!["./test/vocab.sqlite".to_owned()]).await?;
+        assert_eq!(
+            config,
+            Config {
+                path: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
+                    .to_owned()
+            }
+        );
+        Ok(())
     }
 }
