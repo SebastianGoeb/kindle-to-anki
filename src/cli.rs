@@ -1,6 +1,8 @@
 use core::fmt;
 use std::error;
 
+use async_std::{fs, path::PathBuf};
+
 #[derive(Debug)]
 pub enum CliError {
     Args,
@@ -29,4 +31,21 @@ impl From<std::io::Error> for CliError {
 #[derive(Debug, PartialEq)]
 pub struct Config {
     pub path: String,
+}
+
+impl Config {
+    pub async fn parse(args: &[String]) -> Result<Self, CliError> {
+        match args {
+            [path] => {
+                let sqlite_uri = format!(
+                    "file:///{}",
+                    fs::canonicalize(PathBuf::from(path))
+                        .await?
+                        .to_string_lossy()
+                );
+                Ok(Config { path: sqlite_uri })
+            }
+            _ => Err(CliError::Args),
+        }
+    }
 }
