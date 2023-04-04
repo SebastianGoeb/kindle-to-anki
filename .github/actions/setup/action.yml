@@ -19,7 +19,7 @@ runs:
           ~/.cargo/.crates.toml
           ~/.cargo/.crates2.json
           ~/.cargo/bin/
-        key: cargo-system-${{ runner.os }}-${{ hashFiles(~/.cargo/.crates.toml', '~/.cargo/.crates2.json') }}
+        key: cargo-system-${{ runner.os }}-${{ hashFiles('~/.cargo/.crates.toml', '~/.cargo/.crates2.json') }}
     - name: Cache cargo repo
       uses: actions/cache@v3
       with:
