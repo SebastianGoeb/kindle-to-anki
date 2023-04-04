@@ -1,8 +1,6 @@
 use core::fmt;
 use std::error;
 
-use async_std::{fs, path::PathBuf};
-
 #[derive(Debug)]
 pub enum CliError {
     Args,
