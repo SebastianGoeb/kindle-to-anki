@@ -13,9 +13,9 @@ jobs:
       - name: Setup Rust
         uses: ./.github/actions/setup
       - name: Install Tarpaulin
-        run: cargo install cargo-tarpaulin
+        run: echo yes | cargo binstall cargo-tarpaulin
       - name: Run tests and generate coverage
-        run: cargo tarpaulin --engine llvm --skip-clean --all-features --no-fail-fast
+        run: cargo tarpaulin --engine llvm --skip-clean --all-features --no-fail-fast --out xml
       - uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
