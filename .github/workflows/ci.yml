@@ -18,5 +18,4 @@ jobs:
         run: cargo tarpaulin --engine llvm --skip-clean --all-features --no-fail-fast --out xml
       - uses: codecov/codecov-action@v3
         with:
-          verbose: true
           fail_ci_if_error: true
