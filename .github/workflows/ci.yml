@@ -23,7 +23,9 @@ jobs:
           report_paths: "**/junit.xml"
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.0.0
+        if: success() || failure() # always run even if the previous step fails
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        if: success() || failure() # always run even if the previous step fails
         with:
           fail_ci_if_error: true
