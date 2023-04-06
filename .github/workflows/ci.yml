@@ -31,6 +31,11 @@ jobs:
         with:
           paths: "**/junit.xml"
         if: always()
+      - uses: turing85/publish-report@v1
+        with:
+          report-path: "**/junit.xml"
+          recreate-comment: true
+        if: always()
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.0.0
         if: always()
