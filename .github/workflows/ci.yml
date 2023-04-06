@@ -28,7 +28,7 @@ jobs:
       - uses: n-ryu/test-reporter@v0.0.2
         if: always()
         with:
-          name: dorny test report
+          name: n-ryu test report
           path: "**/junit.xml"
           reporter: java-junit
       - uses: test-summary/action@v2
@@ -37,6 +37,7 @@ jobs:
         if: always()
       - uses: turing85/publish-report@v1
         with:
+          report-name: turing85 test
           report-path: "**/junit.xml"
         if: always()
       - name: Upload coverage to Coveralls
