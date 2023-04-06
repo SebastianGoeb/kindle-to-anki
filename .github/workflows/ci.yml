@@ -33,6 +33,10 @@ jobs:
         if: always()
       - uses: turing85/publish-report@v1
         with:
+          recreate-comment: true
+        if: always()
+      - uses: turing85/publish-report@v1
+        with:
           report-name: Rust Test
           report-path: "**/junit.xml"
           comment-message-success: |
