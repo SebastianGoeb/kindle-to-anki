@@ -25,7 +25,7 @@ jobs:
         with:
           check_name: mikepenz test report
           report_paths: "**/junit.xml"
-      - uses: dorny/test-reporter@v1
+      - uses: n-ryu/test-reporter@v0.0.2
         if: always()
         with:
           name: dorny test report
