@@ -62,8 +62,7 @@ mod tests {
         assert_eq!(
             config,
             Config {
-                path: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
-                    .to_owned()
+                path: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.db").to_owned()
             }
         );
         Ok(())
