@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-permissions:
-  actions: write # Necessary to cancel workflow executions
-  checks: write # Necessary to write reports
-  pull-requests: write # Necessary to comment on PRs
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -37,8 +33,28 @@ jobs:
         if: always()
       - uses: turing85/publish-report@v1
         with:
-          report-name: turing85 test
+          report-name: Rust Test
           report-path: "**/junit.xml"
+          comment-message-success: |
+            ### {0} Report
+            ---
+            Tests succeeded 🎉
+
+            | Passed | Failed | Skipped |
+            |--------|--------|---------|
+            | ✅ {1} | ❌ {2} | ⚠️ {3}   |
+
+            You can see the report [here]({4}).
+          comment-message-failure: |
+            ### {0} Report
+            ---
+            Tests failed 🔥
+
+            | Passed | Failed | Skipped |
+            |--------|--------|---------|
+            | ✅ {1} | ❌ {2} | ⚠️ {3}   |
+
+            You can see the report [here]({4}).
         if: always()
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.0.0
