@@ -8,7 +8,7 @@ runs:
       with:
         toolchain: nightly
         override: true
-        components: rustfmt, clippy
+        components: rustfmt, clippy, llvm-tools-preview
 
     # example: https://github.com/actions/cache/blob/main/examples.md#rust---cargo
     # needed dirs: https://doc.rust-lang.org/cargo/guide/cargo-home.html#caching-the-cargo-home-in-ci
