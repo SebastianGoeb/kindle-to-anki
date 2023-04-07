@@ -2,7 +2,7 @@ use std::error;
 
 pub mod cli;
 mod db;
-mod out;
+mod file;
 
 pub async fn log_words(config: &cli::Config) -> Result<(), Box<dyn error::Error>> {
     println!("words from {}", config.sqlite_uri);
@@ -10,7 +10,7 @@ pub async fn log_words(config: &cli::Config) -> Result<(), Box<dyn error::Error>
     let mut conn = db::connect(config.sqlite_uri.clone()).await?;
     let words = db::select_words(&mut conn).await?;
 
-    out::write(&words, &config.out_path)?;
+    file::csv::write(&words, &config.out_path)?;
 
     Ok(())
 }
