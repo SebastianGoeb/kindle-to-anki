@@ -2,16 +2,15 @@ use std::error;
 
 pub mod cli;
 mod db;
+mod out;
 
 pub async fn log_words(config: &cli::Config) -> Result<(), Box<dyn error::Error>> {
-    println!("words from {}", config.path);
+    println!("words from {}", config.sqlite_uri);
 
-    let mut conn = db::connect(config.path.clone()).await?;
+    let mut conn = db::connect(config.sqlite_uri.clone()).await?;
     let words = db::select_words(&mut conn).await?;
 
-    for word in words {
-        println!("{:?}", word);
-    }
+    out::write(&words, &config.out_path)?;
 
     Ok(())
 }
@@ -25,7 +24,8 @@ mod tests {
     #[async_std::test]
     async fn should_log_words() -> Result<(), Box<dyn error::Error>> {
         let config = cli::Config {
-            path: concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite").to_owned(),
+            sqlite_uri: concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite").to_owned(),
+            out_path: concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.test").to_owned(),
         };
 
         // when we log the words

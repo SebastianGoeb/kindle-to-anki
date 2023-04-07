@@ -30,20 +30,24 @@ impl From<std::io::Error> for CliError {
 
 #[derive(Debug, PartialEq)]
 pub struct Config {
-    pub path: String,
+    pub sqlite_uri: String,
+    pub out_path: String,
 }
 
 impl Config {
     pub async fn parse(args: &[String]) -> Result<Self, CliError> {
         match args {
-            [path] => {
+            [in_path, out_path] => {
                 let sqlite_uri = format!(
                     "file:///{}",
-                    fs::canonicalize(PathBuf::from(path))
+                    fs::canonicalize(PathBuf::from(in_path))
                         .await?
                         .to_string_lossy()
                 );
-                Ok(Config { path: sqlite_uri })
+                Ok(Config {
+                    sqlite_uri,
+                    out_path: out_path.to_owned(),
+                })
             }
             _ => Err(CliError::Args),
         }
@@ -58,12 +62,17 @@ mod tests {
 
     #[async_std::test]
     async fn should_parse_config() -> Result<(), CliError> {
-        let config = Config::parse(&vec!["./test/vocab.sqlite".to_owned()]).await?;
+        let config = Config::parse(&vec![
+            "./test/vocab.sqlite".to_owned(),
+            "./test/vocab.csv".to_owned(),
+        ])
+        .await?;
         assert_eq!(
             config,
             Config {
-                path: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
-                    .to_owned()
+                sqlite_uri: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
+                    .to_owned(),
+                out_path: "./test/vocab.csv".to_owned()
             }
         );
         Ok(())
