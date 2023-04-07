@@ -62,6 +62,14 @@ mod tests {
     }
 
     #[test]
+    fn should_nothing() -> Result<(), Box<dyn std::error::Error>> {
+        let csvfile = tempfile::NamedTempFile::new().unwrap();
+        crate::file::csv::write(&vec![], csvfile.path())?;
+        assert_eq!(fs::read_to_string(csvfile.path())?, "");
+        Ok(())
+    }
+
+    #[test]
     fn should_write_words() -> Result<(), Box<dyn std::error::Error>> {
         let csvfile = tempfile::NamedTempFile::new().unwrap();
         crate::file::csv::write(&vec![some_word!(), other_word!()], csvfile.path())?;
