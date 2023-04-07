@@ -33,6 +33,16 @@ mod tests {
 
     use crate::db;
 
+    const EMPTY_WORD: db::Word = db::Word {
+        id: String::new(),
+        word: String::new(),
+        stem: String::new(),
+        lang: String::new(),
+        category: 0,
+        timestamp: 0,
+        profileid: String::new(),
+    };
+
     macro_rules! some_word {
         () => {
             db::Word {
@@ -66,6 +76,14 @@ mod tests {
         let csvfile = tempfile::NamedTempFile::new().unwrap();
         crate::file::csv::write(&vec![], csvfile.path())?;
         assert_eq!(fs::read_to_string(csvfile.path())?, "");
+        Ok(())
+    }
+
+    #[test]
+    fn should_write_empty_word() -> Result<(), Box<dyn std::error::Error>> {
+        let csvfile = tempfile::NamedTempFile::new().unwrap();
+        crate::file::csv::write(&vec![EMPTY_WORD], csvfile.path())?;
+        assert_eq!(fs::read_to_string(csvfile.path())?, ",,,,0,0,\n");
         Ok(())
     }
 
