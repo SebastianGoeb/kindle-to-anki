@@ -1,7 +1,5 @@
 use core::fmt;
-use std::error;
-
-use async_std::{fs, path::PathBuf};
+use std::{error, fs, path::PathBuf};
 
 #[derive(Debug)]
 pub enum CliError {
@@ -30,20 +28,20 @@ impl From<std::io::Error> for CliError {
 
 #[derive(Debug, PartialEq)]
 pub struct Config {
-    pub path: String,
+    pub sqlite_uri: String,
+    pub out_path: PathBuf,
 }
 
 impl Config {
     pub async fn parse(args: &[String]) -> Result<Self, CliError> {
         match args {
-            [path] => {
-                let sqlite_uri = format!(
-                    "file:///{}",
-                    fs::canonicalize(PathBuf::from(path))
-                        .await?
-                        .to_string_lossy()
-                );
-                Ok(Config { path: sqlite_uri })
+            [in_path, out_path] => {
+                let sqlite_uri =
+                    format!("file:///{}", fs::canonicalize(in_path)?.to_string_lossy());
+                Ok(Config {
+                    sqlite_uri,
+                    out_path: out_path.into(),
+                })
             }
             _ => Err(CliError::Args),
         }
@@ -58,12 +56,17 @@ mod tests {
 
     #[async_std::test]
     async fn should_parse_config() -> Result<(), CliError> {
-        let config = Config::parse(&vec!["./test/vocab.sqlite".to_owned()]).await?;
+        let config = Config::parse(&vec![
+            "./test/vocab.sqlite".to_owned(),
+            "./test/vocab.csv".to_owned(),
+        ])
+        .await?;
         assert_eq!(
             config,
             Config {
-                path: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
-                    .to_owned()
+                sqlite_uri: concat!("file:///", env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite")
+                    .to_owned(),
+                out_path: "./test/vocab.csv".into()
             }
         );
         Ok(())
