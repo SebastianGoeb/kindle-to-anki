@@ -6,7 +6,7 @@ use crate::db::Word;
 
 impl From<&Word> for StringRecord {
     fn from(value: &Word) -> Self {
-        return csv::StringRecord::from(vec![
+        csv::StringRecord::from(vec![
             value.id.to_owned(),
             value.word.to_owned(),
             value.stem.to_owned(),
@@ -14,7 +14,7 @@ impl From<&Word> for StringRecord {
             value.category.to_string(),
             value.timestamp.to_string(),
             value.profileid.to_owned(),
-        ]);
+        ])
     }
 }
 
