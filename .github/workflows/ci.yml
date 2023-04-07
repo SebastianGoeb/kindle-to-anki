@@ -60,6 +60,12 @@ jobs:
 
             You can see the report [here]({4}).
         if: always()
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features -- -D warnings`
+          name: static analysis
+        if: always()
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.0.0
         if: always()
