@@ -6,7 +6,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        shell: bash
+        run: |
+          REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --filter=blob:none --no-checkout "$REPO"
+          git checkout "$GITHUB_REF"
+
+      - name: checkout different branches
+        shell: bash
+        run: |
+          git checkout main
+          git checkout "$GITHUB_REF"
 
       - name: Get Next Version
         id: semver
