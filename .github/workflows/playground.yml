@@ -17,6 +17,12 @@ jobs:
           token: ${{ github.token }}
           branch: versioning
 
+      - name: Tag Release Commit
+        shell: bash
+        env:
+          V_NEXT: ${{ steps.semver.outputs.next }}
+        run: git tag "$V_NEXT"
+
       - name: Update CHANGELOG
         id: changelog
         uses: requarks/changelog-action@v1
