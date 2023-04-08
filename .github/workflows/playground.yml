@@ -25,7 +25,7 @@ jobs:
 
       - name: Git Debugging
         shell: bash
-        run: git log --oneline --graph --all
+        run: git log --oneline --graph --all --decorate
 
       - name: Update CHANGELOG
         id: changelog
