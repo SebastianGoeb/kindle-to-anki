@@ -23,6 +23,10 @@ jobs:
           V_NEXT: ${{ steps.semver.outputs.next }}
         run: git tag "$V_NEXT"
 
+      - name: Git Debugging
+        shell: bash
+        run: git log --oneline --graph --all
+
       - name: Update CHANGELOG
         id: changelog
         uses: requarks/changelog-action@v1
