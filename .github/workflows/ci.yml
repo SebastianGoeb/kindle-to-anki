@@ -5,7 +5,7 @@ on:
     branches:
       - main
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -19,7 +19,7 @@ jobs:
       - uses: mikepenz/action-junit-report@v3
         if: always()
         with:
-          check_name: mikepenz test report
+          check_name: test
           report_paths: "**/junit.xml"
       - uses: n-ryu/test-reporter@v0.0.2
         if: always()
@@ -37,7 +37,7 @@ jobs:
         if: always()
       - uses: turing85/publish-report@v1
         with:
-          report-name: Rust Test
+          report-name: turing85 test
           report-path: "**/junit.xml"
           comment-message-success: |
             ### {0} Report
@@ -59,6 +59,12 @@ jobs:
             | ✅ {1} | ❌ {2} | ⚠️ {3}   |
 
             You can see the report [here]({4}).
+        if: always()
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features -- -D warnings
+          name: lint
         if: always()
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.0.0
