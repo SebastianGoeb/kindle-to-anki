@@ -27,20 +27,25 @@ jobs:
         shell: bash
         run: git log --oneline --graph --all --decorate
 
-      - name: Get previous tag
-        id: previousTag
-        run: |
-          name=$(git --no-pager tag --sort=creatordate --merged $V_NEXT | tail -2 | head -1)
-          echo "previousTag: $name"
-          echo "previousTag=$name" >> $GITHUB_ENV
-
-      - name: Update CHANGELOG
-        id: changelog
-        uses: requarks/changelog-action@v1
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v3
         with:
-          token: ${{ github.token }}
-          fromTag: ${{ steps.semver.outputs.next }}
-          toTag: ${{ env.previousTag }}
+          dry_run: true
+
+      # - name: Get previous tag
+      #   id: previousTag
+      #   run: |
+      #     name=$(git --no-pager tag --sort=creatordate --merged $V_NEXT | tail -2 | head -1)
+      #     echo "previousTag: $name"
+      #     echo "previousTag=$name" >> $GITHUB_ENV
+
+      # - name: Update CHANGELOG
+      #   id: changelog
+      #   uses: requarks/changelog-action@v1
+      #   with:
+      #     token: ${{ github.token }}
+      #     fromTag: ${{ steps.semver.outputs.next }}
+      #     toTag: ${{ env.previousTag }}
 
       - name: Debug
         env:
