@@ -10,18 +10,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get Next Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
-          branch: versioning
+      # - name: Get Next Version
+      #   id: semver
+      #   uses: ietf-tools/semver-action@v1
+      #   with:
+      #     token: ${{ github.token }}
+      #     branch: versioning
 
-      - name: Tag Release Commit
+      # - name: Tag Release Commit
+      #   shell: bash
+      #   env:
+      #     V_NEXT: ${{ steps.semver.outputs.next }}
+      #   run: git tag "$V_NEXT"
+
+      - name: git checkout main
         shell: bash
-        env:
-          V_NEXT: ${{ steps.semver.outputs.next }}
-        run: git tag "$V_NEXT"
+        run: |
+          git checkout main
 
       - name: Git Debugging
         shell: bash
