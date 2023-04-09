@@ -1,8 +1,10 @@
-name: Playground
+name: Release
 on:
   push:
+    branches:
+      - main # semantic-release supports distribution channels via other branches
 jobs:
-  playground:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -10,68 +12,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Get Next Version
-      #   id: semver
-      #   uses: ietf-tools/semver-action@v1
-      #   with:
-      #     token: ${{ github.token }}
-      #     branch: versioning
+      - name: Setup Rust
+        uses: ./.github/actions/setup
 
-      # - name: Tag Release Commit
-      #   shell: bash
-      #   env:
-      #     V_NEXT: ${{ steps.semver.outputs.next }}
-      #   run: git tag "$V_NEXT"
-
-      - name: git checkout main
+      - name: Build
         shell: bash
-        run: |
-          git checkout main
-          git merge versioning
-
-      - name: Git Debugging
-        shell: bash
-        run: git log --oneline --graph --all --decorate
+        run: cargo build --release
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          dry_run: true
-
-      # - name: Get previous tag
-      #   id: previousTag
-      #   run: |
-      #     name=$(git --no-pager tag --sort=creatordate --merged $V_NEXT | tail -2 | head -1)
-      #     echo "previousTag: $name"
-      #     echo "previousTag=$name" >> $GITHUB_ENV
-      #
-      # - name: Update CHANGELOG
-      #   id: changelog
-      #   uses: requarks/changelog-action@v1
-      #   with:
-      #     token: ${{ github.token }}
-      #     fromTag: ${{ steps.semver.outputs.next }}
-      #     toTag: ${{ env.previousTag }}
-
-      - name: Debug
-        env:
-          V_CURRENT: ${{ steps.semver.outputs.current }}
-          V_NEXT: ${{ steps.semver.outputs.next }}
-          V_NEXT_STRICT: ${{ steps.semver.outputs.nextStrict }}
-          V_NEXT_MAJOR: ${{ steps.semver.outputs.nextMajor }}
-          V_NEXT_MAJOR_STRICT: ${{ steps.semver.outputs.nextMajorStrict }}
-          CHANGES: ${{ steps.changelog.outputs.changes }}
-        run: |
-          echo "V_CURRENT: $V_CURRENT"
-          echo "V_NEXT: $V_NEXT"
-          echo "V_NEXT_STRICT: $V_NEXT_STRICT"
-          echo "V_NEXT_MAJOR: $V_NEXT_MAJOR"
-          echo "V_NEXT_MAJOR_STRICT: $V_NEXT_MAJOR_STRICT"
-
-          echo -e "\nchangelog"
-          cat CHANGELOG.md
-
-          echo -e "\nchanges"
-          echo "$CHANGES"
