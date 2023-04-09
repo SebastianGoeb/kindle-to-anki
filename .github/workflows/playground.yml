@@ -1,11 +1,13 @@
-name: Release
+name: CD
 on:
-  push:
-    branches:
-      - main # semantic-release supports distribution channels via other branches
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main] # semantic-release supports distribution channels via other branches
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
