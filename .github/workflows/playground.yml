@@ -54,24 +54,24 @@ jobs:
       #     token: ${{ github.token }}
       #     fromTag: ${{ steps.semver.outputs.next }}
       #     toTag: ${{ env.previousTag }}
-      #
-      # - name: Debug
-      #   env:
-      #     V_CURRENT: ${{ steps.semver.outputs.current }}
-      #     V_NEXT: ${{ steps.semver.outputs.next }}
-      #     V_NEXT_STRICT: ${{ steps.semver.outputs.nextStrict }}
-      #     V_NEXT_MAJOR: ${{ steps.semver.outputs.nextMajor }}
-      #     V_NEXT_MAJOR_STRICT: ${{ steps.semver.outputs.nextMajorStrict }}
-      #     CHANGES: ${{ steps.changelog.outputs.changes }}
-      #   run: |
-      #     echo "V_CURRENT: $V_CURRENT"
-      #     echo "V_NEXT: $V_NEXT"
-      #     echo "V_NEXT_STRICT: $V_NEXT_STRICT"
-      #     echo "V_NEXT_MAJOR: $V_NEXT_MAJOR"
-      #     echo "V_NEXT_MAJOR_STRICT: $V_NEXT_MAJOR_STRICT"
 
-      #     echo -e "\nchangelog"
-      #     cat CHANGELOG.md
+      - name: Debug
+        env:
+          V_CURRENT: ${{ steps.semver.outputs.current }}
+          V_NEXT: ${{ steps.semver.outputs.next }}
+          V_NEXT_STRICT: ${{ steps.semver.outputs.nextStrict }}
+          V_NEXT_MAJOR: ${{ steps.semver.outputs.nextMajor }}
+          V_NEXT_MAJOR_STRICT: ${{ steps.semver.outputs.nextMajorStrict }}
+          CHANGES: ${{ steps.changelog.outputs.changes }}
+        run: |
+          echo "V_CURRENT: $V_CURRENT"
+          echo "V_NEXT: $V_NEXT"
+          echo "V_NEXT_STRICT: $V_NEXT_STRICT"
+          echo "V_NEXT_MAJOR: $V_NEXT_MAJOR"
+          echo "V_NEXT_MAJOR_STRICT: $V_NEXT_MAJOR_STRICT"
 
-      #     echo -e "\nchanges"
-      #     echo "$CHANGES"
+          echo -e "\nchangelog"
+          cat CHANGELOG.md
+
+          echo -e "\nchanges"
+          echo "$CHANGES"
