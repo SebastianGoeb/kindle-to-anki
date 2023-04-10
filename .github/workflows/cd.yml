@@ -4,6 +4,7 @@ on:
     workflows: [CI]
     types: [completed]
     branches: [main] # semantic-release supports distribution channels via other branches
+concurrency: cd # don't run multiple releases in parallel and mess up the versions
 jobs:
   release:
     runs-on: ubuntu-latest
