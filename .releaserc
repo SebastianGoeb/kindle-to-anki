@@ -20,7 +20,7 @@
       "@semantic-release/github",
       {
         "assets": [
-          "release/kindle-to-anki"
+          "target/release/kindle-to-anki"
         ]
       }
     ]
