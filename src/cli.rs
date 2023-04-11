@@ -56,10 +56,8 @@ mod tests {
 
     #[async_std::test]
     async fn should_parse_config() -> Result<(), CliError> {
-        let config = Config::parse(&vec![
-            "./test/vocab.sqlite".to_owned(),
-            "./test/vocab.csv".to_owned(),
-        ])
+        let config = Config::parse(&["./test/vocab.sqlite".to_owned(),
+            "./test/vocab.csv".to_owned()])
         .await?;
         assert_eq!(
             config,

@@ -2,6 +2,7 @@ use std::error;
 
 pub mod cli;
 mod db;
+mod dictionary;
 mod file;
 
 pub async fn log_words(config: &cli::Config) -> Result<(), Box<dyn error::Error>> {
