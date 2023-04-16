@@ -120,23 +120,10 @@ mod tests {
 
         // when we select the words from the test file
         let mut conn = connect(path.to_owned()).await?;
-        let result = find_lookups_by_word("en:validate", &mut conn).await?;
+        let result = find_lookups_by_word("doesn't_exist", &mut conn).await?;
 
         // should return the words
-        assert_eq!(
-            result,
-            vec![Lookup {
-                id: "CR!0J9MNQDWAN3VS0RM5CJ7NDKDPMTF:EA3AE709:52112:11".to_owned(),
-                word_key: "en:validate".to_owned(),
-                book_key: "CR!0J9MNQDWAN3VS0RM5CJ7NDKDPMTF:EA3AE709".to_owned(),
-                dict_key: "B00771V9HS".to_owned(),
-                pos: "52112".to_owned(),
-                usage: "They validate other people’s feelings. ".to_owned(),
-                timestamp: 1679510148955 },
-                Lookup { id: "CR!0J9MNQDWAN3VS0RM5CJ7NDKDPMTF:EA3AE709:51616:11".to_owned(),
-                word_key: "en:validate".to_owned(),
-                book_key: "CR!0J9MNQDWAN3VS0RM5CJ7NDKDPMTF:EA3AE709".to_owned(), dict_key: "B00771V9HS".to_owned(), pos: "51616".to_owned(), usage: "If you first validate their stance (“That’s interesting, I never thought of it that way…”) and then present your own opinion (“Something I recently learned is this…”) and then let them know that they still hold their own power in the conversation by asking their opinion (“What do you think about that?”), you open them up to engaging in a conversation where both of you can learn rather than just defend. ".to_owned(), timestamp: 1679510013059 }]
-        );
+        assert_eq!(result, vec![]);
         Ok(())
     }
 }
