@@ -31,7 +31,7 @@ mod tests {
 
     use super::*;
 
-    const EMPTY_WORD: model::Note = model::Note {
+    const EMPTY_NOTE: model::Note = model::Note {
         id: String::new(),
         word: String::new(),
         stem: String::new(),
@@ -39,7 +39,7 @@ mod tests {
         usages: vec![],
     };
 
-    macro_rules! some_word {
+    macro_rules! some_note {
         () => {
             model::Note {
                 id: "some_id".to_owned(),
@@ -51,7 +51,7 @@ mod tests {
         };
     }
 
-    macro_rules! other_word {
+    macro_rules! other_note {
         () => {
             model::Note {
                 id: "other_id".to_owned(),
@@ -64,7 +64,7 @@ mod tests {
     }
 
     #[test]
-    fn should_nothing() -> Result<(), Box<dyn std::error::Error>> {
+    fn should_write_nothing() -> Result<(), Box<dyn std::error::Error>> {
         let csvfile = tempfile::NamedTempFile::new().unwrap();
         crate::file::csv::write(&vec![], csvfile.path())?;
         assert_eq!(fs::read_to_string(csvfile.path())?, "");
@@ -72,17 +72,17 @@ mod tests {
     }
 
     #[test]
-    fn should_write_empty_word() -> Result<(), Box<dyn std::error::Error>> {
+    fn should_write_empty_note() -> Result<(), Box<dyn std::error::Error>> {
         let csvfile = tempfile::NamedTempFile::new().unwrap();
-        crate::file::csv::write(&vec![EMPTY_WORD], csvfile.path())?;
+        crate::file::csv::write(&vec![EMPTY_NOTE], csvfile.path())?;
         assert_eq!(fs::read_to_string(csvfile.path())?, ",,,,\n");
         Ok(())
     }
 
     #[test]
-    fn should_write_words() -> Result<(), Box<dyn std::error::Error>> {
+    fn should_write_multiple_notes() -> Result<(), Box<dyn std::error::Error>> {
         let csvfile = tempfile::NamedTempFile::new().unwrap();
-        crate::file::csv::write(&vec![some_word!(), other_word!()], csvfile.path())?;
+        crate::file::csv::write(&vec![some_note!(), other_note!()], csvfile.path())?;
         assert_eq!(
             fs::read_to_string(csvfile.path())?,
             "some_id,some_word,some_stem,some_lang,some_usage
