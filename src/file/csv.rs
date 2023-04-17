@@ -1,8 +1,6 @@
-use std::{error::Error, path::Path};
-
-use csv::StringRecord;
-
 use crate::model;
+use csv::StringRecord;
+use std::{error::Error, path::Path};
 
 impl From<&model::Note> for StringRecord {
     fn from(value: &model::Note) -> Self {
@@ -11,7 +9,12 @@ impl From<&model::Note> for StringRecord {
             value.word.to_owned(),
             value.stem.to_owned(),
             value.lang.to_owned(),
-            value.usages.join("\n"),
+            value
+                .usages
+                .iter()
+                .map(|usage| format!("<p>\n{}\n</p>", usage))
+                .intersperse("\n".to_owned())
+                .collect(),
         ])
     }
 }
@@ -85,10 +88,36 @@ mod tests {
         crate::file::csv::write(&vec![some_note!(), other_note!()], csvfile.path())?;
         assert_eq!(
             fs::read_to_string(csvfile.path())?,
-            "some_id,some_word,some_stem,some_lang,some_usage
-other_id,other_word,other_stem,other_lang,other_usage
+            "some_id,some_word,some_stem,some_lang,\"<p>
+some_usage
+</p>\"
+other_id,other_word,other_stem,other_lang,\"<p>
+other_usage
+</p>\"
 "
         );
         Ok(())
+    }
+
+    #[test]
+    fn should_format_multiple_usages_with_html() {
+        let note = model::Note {
+            usages: vec!["oneline usage".to_owned(), "multiline\nusage".to_owned()],
+            ..some_note!()
+        };
+        let record = StringRecord::from(&note);
+        let col = record.into_iter().find(|el| el.contains("usage"));
+        assert_eq!(
+            col,
+            Some(
+                "<p>
+oneline usage
+</p>
+<p>
+multiline
+usage
+</p>"
+            )
+        );
     }
 }

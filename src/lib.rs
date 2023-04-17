@@ -1,5 +1,6 @@
-use std::error;
+#![feature(iter_intersperse)]
 
+use std::error;
 pub mod cli;
 mod db;
 mod file;
@@ -50,11 +51,17 @@ mod tests {
 
         // should output csv
         let contents = fs::read_to_string(csvfile.path())?;
+        let row_1: String = contents
+            .lines()
+            .take(3) // multiline contents
+            .intersperse("\n")
+            .collect::<String>();
         assert_eq!(
-            contents.lines().next(),
-            Some("de:verwendet,verwendet,verwenden,de,\"Für den beliebten Käsekuchen verwendet man Speisequark, der dicker als Joghurt ist und nicht so säuerlich. \"")
-        );
-        assert_eq!(contents.lines().count(), 122); // text lines, not csv rows
+            row_1,
+            "de:verwendet,verwendet,verwenden,de,\"<p>
+Für den beliebten Käsekuchen verwendet man Speisequark, der dicker als Joghurt ist und nicht so säuerlich. 
+</p>\"");
+        assert_eq!(contents.lines().count(), 366); // text lines, not csv rows
         Ok(())
     }
 }
