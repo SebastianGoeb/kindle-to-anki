@@ -9,7 +9,7 @@ pub struct Note {
 }
 
 impl Note {
-    pub fn new(word: &db::Word, usages: Vec<String>) -> Self {
+    pub fn new(word: db::Word, usages: Vec<String>) -> Self {
         Note {
             id: word.id,
             word: word.word,

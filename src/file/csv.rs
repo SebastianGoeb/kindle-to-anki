@@ -11,7 +11,7 @@ impl From<&model::Note> for StringRecord {
             value.word.to_owned(),
             value.stem.to_owned(),
             value.lang.to_owned(),
-            value.usages.to_string(),
+            value.usages.join("\n"),
         ])
     }
 }
@@ -36,7 +36,7 @@ mod tests {
         word: String::new(),
         stem: String::new(),
         lang: String::new(),
-        usages: String::new(),
+        usages: vec![],
     };
 
     macro_rules! some_word {
@@ -46,7 +46,7 @@ mod tests {
                 word: "some_word".to_owned(),
                 stem: "some_stem".to_owned(),
                 lang: "some_lang".to_owned(),
-                usages: "some_usage".to_owned(),
+                usages: vec!["some_usage".to_owned()],
             }
         };
     }
@@ -58,7 +58,7 @@ mod tests {
                 word: "other_word".to_owned(),
                 stem: "other_stem".to_owned(),
                 lang: "other_lang".to_owned(),
-                usages: "other_usage".to_owned(),
+                usages: vec!["other_usage".to_owned()],
             }
         };
     }

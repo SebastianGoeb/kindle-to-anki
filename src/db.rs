@@ -1,4 +1,4 @@
-use sqlx::{Connection, SqliteConnection};
+use sqlx::SqlitePool;
 
 #[derive(sqlx::FromRow, PartialEq, Debug)]
 pub struct Word {
@@ -22,23 +22,23 @@ pub struct Lookup {
     pub timestamp: i64,
 }
 
-pub async fn connect(path: String) -> Result<SqliteConnection, sqlx::Error> {
-    SqliteConnection::connect(&path).await
+pub async fn connect(path: String) -> Result<SqlitePool, sqlx::Error> {
+    SqlitePool::connect(&path).await
 }
 
-pub async fn select_words(conn: &mut SqliteConnection) -> Result<Vec<Word>, sqlx::Error> {
+pub async fn select_words(pool: &SqlitePool) -> Result<Vec<Word>, sqlx::Error> {
     sqlx::query_as::<_, Word>("SELECT * FROM WORDS")
-        .fetch_all(conn)
+        .fetch_all(pool)
         .await
 }
 
 pub async fn find_lookups_by_word(
     word_key: &str,
-    conn: &mut SqliteConnection,
+    pool: &SqlitePool,
 ) -> Result<Vec<Lookup>, sqlx::Error> {
     sqlx::query_as::<_, Lookup>("SELECT * FROM LOOKUPS WHERE word_key = ?")
         .bind(word_key)
-        .fetch_all(conn)
+        .fetch_all(pool)
         .await
 }
 
@@ -55,8 +55,8 @@ mod tests {
         let path = concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite");
 
         // when we select the words from the test file
-        let mut conn = connect(path.to_owned()).await?;
-        let result = select_words(&mut conn).await?;
+        let pool = connect(path.to_owned()).await?;
+        let result = select_words(&pool).await?;
 
         // should return the words
         assert_eq!(result.len(), 121);
@@ -81,8 +81,8 @@ mod tests {
         let path = concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite");
 
         // when we select the words from the test file
-        let mut conn = connect(path.to_owned()).await?;
-        let result = find_lookups_by_word("en:validate", &mut conn).await?;
+        let pool = connect(path.to_owned()).await?;
+        let result = find_lookups_by_word("en:validate", &pool).await?;
 
         // should return the words
         let usage_1 = "They validate other people\u{2019}s feelings. ";
@@ -119,8 +119,8 @@ mod tests {
         let path = concat!(env!("CARGO_MANIFEST_DIR"), "/test/vocab.sqlite");
 
         // when we select the words from the test file
-        let mut conn = connect(path.to_owned()).await?;
-        let result = find_lookups_by_word("doesn't_exist", &mut conn).await?;
+        let pool = connect(path.to_owned()).await?;
+        let result = find_lookups_by_word("doesn't_exist", &pool).await?;
 
         // should return the words
         assert_eq!(result, vec![]);
