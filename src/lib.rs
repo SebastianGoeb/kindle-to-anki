@@ -17,13 +17,12 @@ pub async fn export_to_csv(config: &cli::Config) -> Result<(), Box<dyn error::Er
 }
 
 async fn import_notes(pool: &sqlx::SqlitePool) -> Result<Vec<model::Note>, sqlx::Error> {
-    let words = db::select_words(&pool).await?;
+    let words = db::select_words(pool).await?;
     let it = words
         .into_iter()
         .map(|word| async move { word_to_note(word, pool).await });
     let notes: Vec<Result<model::Note, sqlx::Error>> = futures::future::join_all(it).await;
-    let oks: Result<Vec<model::Note>, sqlx::Error> = notes.into_iter().collect();
-    return oks;
+    notes.into_iter().collect()
 }
 
 async fn word_to_note(word: db::Word, pool: &sqlx::SqlitePool) -> Result<model::Note, sqlx::Error> {
