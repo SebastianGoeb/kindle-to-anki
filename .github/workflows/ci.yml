@@ -81,12 +81,12 @@ jobs:
 
       - name: Rename binary
         shell: bash
-        run: mv target/release/kindle-to-anki "target/release/kindle-to-anki-${{ matrix.binary_suffix }}"
+        run: mv target/debug/kindle-to-anki "target/debug/kindle-to-anki-${{ matrix.binary_suffix }}"
 
       - uses: actions/upload-artifact@v3
         with:
-          name: release-binary-${{ matrix.binary_suffix }}
-          path: target/release/*
+          name: debug-binary-${{ matrix.binary_suffix }}
+          path: target/debug/*
 
   multiarch-debug:
     runs-on: ubuntu-latest
@@ -97,6 +97,6 @@ jobs:
       - name: debug
         shell: bash
         run: |
-          ls -hla target/release
+          ls -hla target/debug
           ls -hla etc/usr/artifacts/
           ls -hla etc/usr/artifacts/*
