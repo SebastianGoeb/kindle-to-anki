@@ -81,7 +81,7 @@ jobs:
 
       - name: Rename binary
         shell: bash
-        run: mv target/${{ matrix.binary_suffix }}/debug/kindle-to-anki "target/debug/kindle-to-anki-${{ matrix.binary_suffix }}"
+        run: mv target/${{ matrix.target }}/debug/kindle-to-anki "target/debug/kindle-to-anki-${{ matrix.binary_suffix }}"
 
       - uses: actions/upload-artifact@v3
         with:
