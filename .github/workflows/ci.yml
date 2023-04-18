@@ -20,45 +20,45 @@ jobs:
         with:
           check_name: test
           report_paths: "**/junit.xml"
-      - uses: n-ryu/test-reporter@v0.0.2
-        if: always()
-        with:
-          name: n-ryu test report
-          path: "**/junit.xml"
-          reporter: java-junit
-      - uses: test-summary/action@v2
-        with:
-          paths: "**/junit.xml"
-        if: always()
-      - uses: turing85/publish-report@v1
-        with:
-          recreate-comment: true
-        if: always()
-      - uses: turing85/publish-report@v1
-        with:
-          report-name: turing85 test
-          report-path: "**/junit.xml"
-          comment-message-success: |
-            ### {0} Report
-            ---
-            Tests succeeded 🎉
+      # - uses: n-ryu/test-reporter@v0.0.2
+      #   if: always()
+      #   with:
+      #     name: n-ryu test report
+      #     path: "**/junit.xml"
+      #     reporter: java-junit
+      # - uses: test-summary/action@v2
+      #   with:
+      #     paths: "**/junit.xml"
+      #   if: always()
+      # - uses: turing85/publish-report@v1
+      #   with:
+      #     recreate-comment: true
+      #   if: always()
+      # - uses: turing85/publish-report@v1
+      #   with:
+      #     report-name: turing85 test
+      #     report-path: "**/junit.xml"
+      #     comment-message-success: |
+      #       ### {0} Report
+      #       ---
+      #       Tests succeeded 🎉
 
-            | Passed | Failed | Skipped |
-            |--------|--------|---------|
-            | ✅ {1} | ❌ {2} | ⚠️ {3}   |
+      #       | Passed | Failed | Skipped |
+      #       |--------|--------|---------|
+      #       | ✅ {1} | ❌ {2} | ⚠️ {3}   |
 
-            You can see the report [here]({4}).
-          comment-message-failure: |
-            ### {0} Report
-            ---
-            Tests failed 🔥
+      #       You can see the report [here]({4}).
+      #     comment-message-failure: |
+      #       ### {0} Report
+      #       ---
+      #       Tests failed 🔥
 
-            | Passed | Failed | Skipped |
-            |--------|--------|---------|
-            | ✅ {1} | ❌ {2} | ⚠️ {3}   |
+      #       | Passed | Failed | Skipped |
+      #       |--------|--------|---------|
+      #       | ✅ {1} | ❌ {2} | ⚠️ {3}   |
 
-            You can see the report [here]({4}).
-        if: always()
+      #       You can see the report [here]({4}).
+      #   if: always()
       - uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
