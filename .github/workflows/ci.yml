@@ -97,6 +97,9 @@ jobs:
       - name: debug
         shell: bash
         run: |
-          ls -hla target/debug
-          ls -hla etc/usr/artifacts/
-          ls -hla etc/usr/artifacts/*
+          ls -hla debug-binary-linux
+          ls -hla debug-binary-macos
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: always()
