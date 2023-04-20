@@ -6,21 +6,60 @@ on:
     branches: [main] # semantic-release supports distribution channels via other branches
 concurrency: cd # don't run multiple releases in parallel and mess up the versions
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  build:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-apple-darwin
+
+        include:
+          - target: x86_64-unknown-linux-gnu
+            host_os: ubuntu-latest
+            binary_suffix: linux
+
+          - target: x86_64-apple-darwin
+            host_os: macos-latest
+            binary_suffix: macos
+    runs-on: ${{ matrix.host_os }}
+    steps:
+      # setup
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Rust
+        uses: ./.github/actions/setup
+
+      - name: Install target
+        shell: bash
+        run: rustup target add ${{ matrix.target }}
+
+      # build
+      - name: Build
+        shell: bash
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Rename binary
+        shell: bash
+        run: mv target/${{ matrix.target }}/release/kindle-to-anki target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.binary_suffix }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: binary-${{ matrix.binary_suffix }}
+          path: target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.binary_suffix }}
+
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Rust
-        uses: ./.github/actions/setup
-
-      - name: Build
-        shell: bash
-        run: cargo build --release
+      - uses: actions/download-artifact@v3
+      # TODO path
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
