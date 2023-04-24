@@ -59,7 +59,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v3
+      - name: Fetch binaries from before
+        uses: actions/download-artifact@v3
         with:
           path: binary
 
