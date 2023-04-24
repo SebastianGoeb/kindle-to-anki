@@ -44,7 +44,8 @@ jobs:
         shell: bash
         run: mv target/${{ matrix.target }}/release/kindle-to-anki target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.os }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Save binary for later
+        uses: actions/upload-artifact@v3
         with:
           name: binary-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.os }}
