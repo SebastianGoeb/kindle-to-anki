@@ -47,7 +47,7 @@ jobs:
       - name: Save binary for later
         uses: actions/upload-artifact@v3
         with:
-          name: binary-${{ matrix.os }}
+          name: release-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.os }}
 
   release:
@@ -59,10 +59,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch binaries from before
+      - name: Fetch binaries for all platforms
         uses: actions/download-artifact@v3
         with:
-          path: binary
+          path: release
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
