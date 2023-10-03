@@ -1,5 +1,3 @@
-#![feature(iter_intersperse)]
-
 use std::error;
 pub mod cli;
 mod db;
@@ -38,6 +36,8 @@ mod tests {
 
     use crate::{cli, export_to_csv};
 
+    use itertools::intersperse;
+
     #[async_std::test]
     async fn should_export_words_and_usage_to_csv() -> Result<(), Box<dyn error::Error>> {
         let csvfile = tempfile::NamedTempFile::new()?;
@@ -51,11 +51,11 @@ mod tests {
 
         // should output csv
         let contents = fs::read_to_string(csvfile.path())?;
-        let row_1: String = contents
-            .lines()
-            .take(3) // multiline contents
-            .intersperse("\n")
-            .collect::<String>();
+        let row_1: String = intersperse(
+            contents.lines().take(3), // multiline contents
+            "\n",
+        )
+        .collect::<String>();
         assert_eq!(
             row_1,
             "de:verwendet,verwendet,verwenden,de,\"<p>
