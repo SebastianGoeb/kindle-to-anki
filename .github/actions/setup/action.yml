@@ -30,7 +30,3 @@ runs:
           target/
         key: cargo-repo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
-    - uses: taiki-e/install-action@v2
-      with:
-        tool: cargo-binstall
-
