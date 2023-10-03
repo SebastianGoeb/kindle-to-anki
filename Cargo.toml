@@ -9,3 +9,4 @@ async-std = { version = "1", features = [ "attributes" ] }
 futures = "0.3.28"
 csv = "1.2.1"
 tempfile = "3.5.0"
+itertools = "0.11.0"

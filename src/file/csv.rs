@@ -1,3 +1,5 @@
+use itertools::intersperse;
+
 use crate::model;
 use csv::StringRecord;
 use std::{error::Error, path::Path};
@@ -9,12 +11,14 @@ impl From<&model::Note> for StringRecord {
             value.word.to_owned(),
             value.stem.to_owned(),
             value.lang.to_owned(),
-            value
-                .usages
-                .iter()
-                .map(|usage| format!("<p>\n{}\n</p>", usage))
-                .intersperse("\n".to_owned())
-                .collect(),
+            intersperse(
+                value
+                    .usages
+                    .iter()
+                    .map(|usage| format!("<p>\n{}\n</p>", usage)),
+                "\n".to_owned(),
+            )
+            .collect(),
         ])
     }
 }
