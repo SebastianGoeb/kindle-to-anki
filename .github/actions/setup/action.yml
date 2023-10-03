@@ -6,7 +6,7 @@ runs:
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: nightly
+        toolchain: stable
         override: true
         components: rustfmt, clippy, llvm-tools-preview
 
@@ -30,6 +30,3 @@ runs:
           target/
         key: cargo-repo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
-    - name: Install cargo-binstall
-      shell: bash
-      run: cargo install cargo-binstall
