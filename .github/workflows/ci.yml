@@ -15,7 +15,9 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Install more cargo tools
-        run: echo yes | cargo binstall cargo-llvm-cov cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov,cargo-nextest
 
       # test
       - name: Run tests and generate coverage

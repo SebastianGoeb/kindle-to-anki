@@ -30,6 +30,3 @@ runs:
           target/
         key: cargo-repo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
-    - name: Install cargo-binstall
-      shell: bash
-      run: cargo install cargo-binstall
