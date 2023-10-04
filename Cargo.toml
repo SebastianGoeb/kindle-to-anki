@@ -8,5 +8,5 @@ sqlx = { version = "0.7", features = [ "runtime-async-std-rustls", "sqlite" ] }
 async-std = { version = "1", features = [ "attributes" ] }
 futures = "0.3.28"
 csv = "1.3.0"
-tempfile = "3.5.0"
+tempfile = "3.8.0"
 itertools = "0.11.0"
