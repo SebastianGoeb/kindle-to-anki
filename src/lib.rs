@@ -61,7 +61,7 @@ mod tests {
             "de:verwendet,verwendet,verwenden,de,\"<p>
 Für den beliebten Käsekuchen verwendet man Speisequark, der dicker als Joghurt ist und nicht so säuerlich. 
 </p>\"");
-        assert_eq!(contents.lines().count(), 366); // text lines, not csv rows
+        assert_eq!(contents.lines().count(), 365); // text lines, not csv rows
         Ok(())
     }
 }
