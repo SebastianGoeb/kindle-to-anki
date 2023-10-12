@@ -2,6 +2,9 @@ name: PR
 on:
   pull_request:
 jobs:
+  lint-repo:
+    uses: "./.github/workflows/lint-repo.yml"
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -39,4 +42,3 @@ jobs:
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2.2.3
         if: always()
-
