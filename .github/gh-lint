@@ -28,7 +28,6 @@ function check_errors() {
   fi
 }
 
-gh auth login
 repo=$(gh api 'repos/{owner}/{repo}')
 
 validate_jq "$repo" '.allow_squash_merge' 'true'

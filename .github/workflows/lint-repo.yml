@@ -2,6 +2,9 @@ name: Lint Repo Settings
 on:
   workflow_call:
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -9,5 +12,5 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Lint
+      - name: Lint}
         run: ./.github/gh-lint
