@@ -33,5 +33,9 @@ repo=$(gh api 'repos/{owner}/{repo}')
 validate_jq "$repo" '.allow_squash_merge' 'true'
 validate_jq "$repo" '.allow_merge_commit' 'false'
 validate_jq "$repo" '.allow_rebase_merge' 'false'
+validate_jq "$repo" '.allow_auto_merge' 'true'
+validate_jq "$repo" '.delete_branch_on_merge' 'true'
+validate_jq "$repo" '.allow_update_branch' 'true'
+validate_jq "$repo" '.use_squash_pr_title_as_default' 'true'
 
 check_errors
