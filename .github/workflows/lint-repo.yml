@@ -1,16 +1,9 @@
 name: Lint Repo Settings
-on:
-  workflow_call:
 
-env:
-  GITHUB_TOKEN: ${{ github.token }}
+on:
+  pull_request:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Lint
-        run: ./.github/gh-lint
+    uses: SebastianGoeb/automation/.github/workflows/lint-repo-settings.yml@main
+    secrets: inherit
