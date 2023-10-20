@@ -1,9 +1,14 @@
 name: PR
+
 on:
   pull_request:
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
     steps:
       # setup
       - name: Checkout Repo
