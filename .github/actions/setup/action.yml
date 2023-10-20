@@ -10,9 +10,8 @@ runs:
         override: true
         components: rustfmt, clippy, llvm-tools-preview
 
-    # example: https://github.com/actions/cache/blob/main/examples.md#rust---cargo
     # needed dirs: https://doc.rust-lang.org/cargo/guide/cargo-home.html#caching-the-cargo-home-in-ci
-    - name: Cache cargo system
+    - name: Cache Cargo System (cargo install)
       uses: actions/cache@v3
       with:
         path: |
@@ -20,7 +19,9 @@ runs:
           ~/.cargo/.crates2.json
           ~/.cargo/bin/
         key: cargo-system-${{ runner.os }}-${{ hashFiles('~/.cargo/.crates.toml', '~/.cargo/.crates2.json') }}
-    - name: Cache cargo repo
+
+    # example: https://github.com/actions/cache/blob/main/examples.md#rust---cargo
+    - name: Cache Cargo Repo (cargo install)
       uses: actions/cache@v3
       with:
         path: |
@@ -29,4 +30,3 @@ runs:
           ~/.cargo/git/db/
           target/
         key: cargo-repo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-
