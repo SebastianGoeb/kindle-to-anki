@@ -50,7 +50,7 @@ jobs:
         run: mv target/${{ matrix.target }}/release/kindle-to-anki target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.os }}
 
       - name: Save binary for later
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/kindle-to-anki-${{ matrix.os }}
