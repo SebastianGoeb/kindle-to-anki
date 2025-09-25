@@ -11,7 +11,7 @@ jobs:
     steps:
       # setup
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Rust
         uses: ./.github/actions/setup
